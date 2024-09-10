@@ -21,7 +21,7 @@ public class JwtUtils {
     private final static long ACCESS_TOKEN_TIME = 15 * 60 * 1000;
     private final static long REFRESH_TOKEN_TIME = 6L * 30 * 24 * 60 * 60 * 1000;
 
-    public boolean isValid(String token) {
+    public boolean isExpired(String token) {
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
 
