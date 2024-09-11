@@ -11,9 +11,6 @@ import java.util.UUID;
 public class AccessService {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private TokenService tokenService;
 
     @Autowired
