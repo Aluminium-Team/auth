@@ -31,9 +31,18 @@ public class Token {
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
 
+    @Column(nullable = false)
+    private Timestamp updatedAt;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Timestamp.from(Instant.now());
+        updatedAt = createdAt;
         isLoggedIn = true;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = Timestamp.from(Instant.now());
     }
 }

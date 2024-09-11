@@ -24,6 +24,9 @@ public class AuthService {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    AccessService accessService;
+
     public ResponseEntity<Object> signup(String username, String email, String password) {
         // Validate username
         if (username == null || username.isEmpty()) {
@@ -121,5 +124,28 @@ public class AuthService {
                 tokenRow.getJti().toString()
         ), HttpStatus.OK);
 
+    }
+
+    public ResponseEntity<Object> logout(String refreshToken) {
+        try {
+            accessService.validateRefreshToken(refreshToken);
+            tokenService.logout(jwtUtils.extractJti(refreshToken));
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println("TOOOOO");
+            System.out.println(accessService.validateRefreshToken(refreshToken));
+            System.out.println(jwtUtils.extractJti(refreshToken));
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+    }
+
+    public ResponseEntity<String> generateAccessToken(String refreshToken) {
+        try {
+            String accessToken = accessService.validateRefreshToken(refreshToken);
+            return new ResponseEntity<>(accessToken, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
     }
 }
