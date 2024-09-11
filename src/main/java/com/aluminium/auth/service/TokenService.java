@@ -25,4 +25,7 @@ public class TokenService {
         return tokenRepository.save(token);
     }
 
+    public void logout(UUID jti) {
+        tokenRepository.logout(jti);
+    }
 }

@@ -22,7 +22,13 @@ public class AccessService {
     }
 
     public String validateRefreshToken(String token) {
-        if (!jwtUtils.isExpired(token)) throw new IllegalArgumentException("Refresh token expired");
+        if (!jwtUtils.isExpired(token)) {
+            try {
+                tokenService.logout(jwtUtils.extractJti(token));
+            } catch (Exception ignored){};
+
+            throw new IllegalArgumentException("Refresh token expired");
+        }
 
         final UUID requestJti = jwtUtils.extractJti(token);
         final Token tokenFromDB = tokenService.getUserByJti(requestJti);
