@@ -52,4 +52,8 @@ public class UserService {
         User user = new User(username, email, encryptedPassword);
         return userRepository.save(user);
     }
+
+    public User getUserByEmail(String email) throws Exception {
+        return userRepository.findByEmail(email).orElseThrow(Exception::new);
+    }
 }

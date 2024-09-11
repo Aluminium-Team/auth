@@ -29,7 +29,7 @@ public class AccessService {
 
         final UUID databaseJti = tokenFromDB.getJti();
 
-        if (!databaseJti.equals(requestJti)) {
+        if (!databaseJti.equals(requestJti) || !tokenFromDB.getIsLoggedIn()) {
             throw new IllegalArgumentException("Refresh token holds an incorrect JTI");
         }
 
