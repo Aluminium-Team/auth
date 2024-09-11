@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthService {
 
@@ -23,9 +25,6 @@ public class AuthService {
 
     @Autowired
     TokenService tokenService;
-
-    @Autowired
-    AccessService accessService;
 
     public ResponseEntity<Object> signup(String username, String email, String password) {
         // Validate username
@@ -123,29 +122,16 @@ public class AuthService {
                 refreshToken,
                 tokenRow.getJti().toString()
         ), HttpStatus.OK);
-
     }
 
-    public ResponseEntity<Object> logout(String refreshToken) {
-        try {
-            accessService.validateRefreshToken(refreshToken);
-            tokenService.logout(jwtUtils.extractJti(refreshToken));
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            System.out.println("TOOOOO");
-            System.out.println(accessService.validateRefreshToken(refreshToken));
-            System.out.println(jwtUtils.extractJti(refreshToken));
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
+    public ResponseEntity<Object> logout(UUID jti) {
+        tokenService.logout(jti);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> generateAccessToken(String refreshToken) {
-        try {
-            String accessToken = accessService.validateRefreshToken(refreshToken);
-            return new ResponseEntity<>(accessToken, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<String> generateAccessToken(UUID jti) {
+        Token token = tokenService.getTokenByJti(jti);
+        String accessToken = jwtUtils.generateToken(token.getUser());
+        return new ResponseEntity<>(accessToken, HttpStatus.CREATED);
     }
 }

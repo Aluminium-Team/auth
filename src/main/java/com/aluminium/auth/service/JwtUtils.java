@@ -25,7 +25,7 @@ public class JwtUtils {
         Claims claims = extractClaims(token);
         Date expiration = claims.getExpiration();
 
-        return expiration != null && expiration.after(new Date());
+        return expiration == null || expiration.before(new Date());
     }
 
     /*

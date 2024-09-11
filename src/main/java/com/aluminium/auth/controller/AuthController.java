@@ -7,10 +7,13 @@ import com.aluminium.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -30,12 +33,12 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Object> logout(@RequestBody TokensDto request) {
-        return authService.logout(request.getRefreshToken());
+    public ResponseEntity<Object> logout(Authentication authentication) {
+        return authService.logout((UUID) authentication.getPrincipal());
     }
 
     @PostMapping("/generateAccessToken")
-    public ResponseEntity<String> generateAccessToken(@RequestBody TokensDto request) {
-        return authService.generateAccessToken(request.getRefreshToken());
+    public ResponseEntity<String> generateAccessToken(Authentication authentication) {
+        return authService.generateAccessToken((UUID) authentication.getPrincipal());
     }
 }
