@@ -1,6 +1,6 @@
 package com.aluminium.auth.controller;
 
-import com.aluminium.auth.DTO.TokensDto;
+import com.aluminium.auth.IO.TokensDto;
 import com.aluminium.auth.service.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

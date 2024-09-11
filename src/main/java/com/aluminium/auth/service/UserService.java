@@ -1,6 +1,5 @@
 package com.aluminium.auth.service;
 
-import com.aluminium.auth.DTO.UserDto;
 import com.aluminium.auth.model.User;
 import com.aluminium.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +46,10 @@ public class UserService {
                         "email", user.getEmail(),
                         "created_at", user.getCreatedAt())
                 , HttpStatus.OK);
+    }
+
+    public User createUser(String username, String email, String encryptedPassword) {
+        User user = new User(username, email, encryptedPassword);
+        return userRepository.save(user);
     }
 }
