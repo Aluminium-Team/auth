@@ -1,4 +1,4 @@
-package com.aluminium.auth.DTO;
+package com.aluminium.auth.IO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
