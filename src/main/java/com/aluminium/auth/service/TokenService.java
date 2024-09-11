@@ -15,7 +15,7 @@ public class TokenService {
     @Autowired
     private TokenRepository tokenRepository;
 
-    public Token getUserByJti(UUID jti) {
+    public Token getTokenByJti(UUID jti) {
         Optional<Token> tokenOptional = tokenRepository.findById(jti);
         return tokenOptional.orElseGet(Token::new);
     }

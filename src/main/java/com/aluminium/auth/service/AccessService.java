@@ -15,14 +15,8 @@ public class AccessService {
     @Autowired
     JwtUtils jwtUtils;
 
-    public String validateAccessToken(String token) {
-        if (!jwtUtils.isExpired(token)) throw new IllegalArgumentException("Access token expired");
-
-        return token;
-    }
-
     public String validateRefreshToken(String token) {
-        if (!jwtUtils.isExpired(token)) {
+        if (jwtUtils.isExpired(token)) {
             try {
                 tokenService.logout(jwtUtils.extractJti(token));
             } catch (Exception ignored){};
@@ -31,7 +25,7 @@ public class AccessService {
         }
 
         final UUID requestJti = jwtUtils.extractJti(token);
-        final Token tokenFromDB = tokenService.getUserByJti(requestJti);
+        final Token tokenFromDB = tokenService.getTokenByJti(requestJti);
 
         final UUID databaseJti = tokenFromDB.getJti();
 

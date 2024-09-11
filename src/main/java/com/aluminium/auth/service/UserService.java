@@ -26,16 +26,9 @@ public class UserService {
         return userOptional.orElseGet(User::new);
     }
 
-    public ResponseEntity<Map<String, Object>> getUserInfo(String accessToken) {
-        try {
-            accessService.validateAccessToken(accessToken);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-        }
-
+    public ResponseEntity<Map<String, Object>> getUserInfo(UUID userId) {
         User user;
         try {
-            UUID userId = jwtUtils.extractUserId(accessToken);
             user = userRepository.findById(userId).orElseThrow(Exception::new);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
