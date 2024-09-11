@@ -19,4 +19,10 @@ public class TokenService {
         Optional<Token> tokenOptional = tokenRepository.findById(jti);
         return tokenOptional.orElseGet(Token::new);
     }
+
+    public Token createRefreshToken(User user) {
+        Token token = new Token(user);
+        return tokenRepository.save(token);
+    }
+
 }
